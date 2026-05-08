@@ -25,15 +25,20 @@ Hooks.once("ready", () => {
 
 Hooks.on("getSceneControlButtons", controls => {
   if (!game.user.isGM) return;
-  const tokenLayer = controls.find(c => c.name === "token");
+  const tokenLayer = Array.isArray(controls)
+    ? controls.find(c => c.name === "token")
+    : (controls.token ?? controls.tokens);
   if (!tokenLayer) return;
-  tokenLayer.tools.push({
-    name:  "recipe-manager",
-    title: game.i18n.localize("FALLOUT_D30_CRAFTING.RecipeManager.Title"),
-    icon:  "fas fa-flask",
-    button: true,
+  const tool = {
+    name:    "recipe-manager",
+    title:   game.i18n.localize("FALLOUT_D30_CRAFTING.RecipeManager.Title"),
+    icon:    "fa-solid fa-flask",
+    visible: true,
+    button:  true,
     onClick: () => new RecipeManager().render({ force: true }),
-  });
+  };
+  if (Array.isArray(tokenLayer.tools)) tokenLayer.tools.push(tool);
+  else tokenLayer.tools["recipe-manager"] = tool;
 });
 
 // ── Chat card buttons ─────────────────────────────────────────────────────────
