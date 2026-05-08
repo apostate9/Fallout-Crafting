@@ -62,6 +62,14 @@ export class RecipeManager extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     const html = this.element;
 
+    // Explicitly restore select values — V13 DOM diffing can leave them stale
+    if (context.draft) {
+      const benchSel = html.querySelector(".recipe-field[data-field='bench']");
+      if (benchSel) benchSel.value = context.draft.bench ?? "";
+      const skillSel = html.querySelector(".recipe-field[data-field='skill']");
+      if (skillSel) skillSel.value = context.draft.skill ?? "";
+    }
+
     // List interactions
     html.querySelector(".recipe-search")?.addEventListener("input", e => {
       this.#filter = e.target.value;

@@ -102,6 +102,10 @@ export class CraftingWindow extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     const html = this.element;
 
+    // Explicitly restore bench select value — V13 DOM diffing can leave it stale
+    const benchSel = html.querySelector(".bench-select");
+    if (benchSel) benchSel.value = context.benchType;
+
     html.querySelector(".bench-select")?.addEventListener("change", e => {
       this.#benchType = e.target.value;
       setLastBenchType(this.#benchType);
