@@ -2,7 +2,7 @@
   "id": "fallout-d30-crafting",
   "title": "FALLOUT d30 Crafting",
   "description": "Recipe-based crafting for the FALLOUT d30 / Custom System Builder campaign. Replaces furu-sc with correct multi-stack quantity handling.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "authors": [
     { "name": "Rob" }
   ],

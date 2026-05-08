@@ -129,7 +129,7 @@ const opts = types.map(b => \`<option value="\${b.id}">\${b.label}</option>\`).j
 const bench = await foundry.applications.api.DialogV2.prompt({
   window: { title: "Select Bench" },
   content: \`<select name="bench" style="width:100%">\${opts}</select>\`,
-  ok: { callback: (_e, _btn, dlg) => dlg.querySelector("[name=bench]").value },
+  ok: { callback: (_e, _btn, dlg) => dlg.element.querySelector("[name=bench]").value },
 });
 if (bench) game.modules.get("${MODULE_ID}").api.openCrafting(actor, bench);`,
     },
