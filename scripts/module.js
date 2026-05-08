@@ -18,6 +18,7 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", () => {
   exposeAPI();
+  createModuleMacros();
   console.log(`${MODULE_ID} | Ready`);
 });
 
@@ -100,4 +101,47 @@ function exposeAPI() {
     importRecipes:  importRecipesJSON,
   };
   game.modules.get(MODULE_ID).api = api;
+}
+
+// ── Macro setup ───────────────────────────────────────────────────────────────
+
+async function createModuleMacros() {
+  if (!game.user.isGM) return;
+
+  const ACTOR_PREAMBLE = `\
+const actor = canvas.tokens.controlled[0]?.actor ?? game.user.character;
+if (!actor) { ui.notifications.warn("Select a token or assign a character first."); return; }`;
+
+  const macros = [
+    {
+      name: "Open Crafting",
+      img:  "icons/tools/smithing/hammer-chisel-steel-blue.webp",
+      command: `${ACTOR_PREAMBLE}
+game.modules.get("${MODULE_ID}").api.openCrafting(actor);`,
+    },
+    {
+      name: "Open Crafting at Bench…",
+      img:  "icons/tools/smithing/anvil.webp",
+      command: `${ACTOR_PREAMBLE}
+const types = game.settings.get("${MODULE_ID}", "benchTypes") ?? [];
+if (!types.length) { ui.notifications.warn("No bench types configured. Ask your GM."); return; }
+const opts = types.map(b => \`<option value="\${b.id}">\${b.label}</option>\`).join("");
+const bench = await foundry.applications.api.DialogV2.prompt({
+  window: { title: "Select Bench" },
+  content: \`<select name="bench" style="width:100%">\${opts}</select>\`,
+  ok: { callback: (_e, _btn, dlg) => dlg.querySelector("[name=bench]").value },
+});
+if (bench) game.modules.get("${MODULE_ID}").api.openCrafting(actor, bench);`,
+    },
+    {
+      name: "Open Recipe Manager",
+      img:  "icons/skills/trades/cooking-cauldron-grey.webp",
+      command: `game.modules.get("${MODULE_ID}").api.openRecipeManager();`,
+    },
+  ];
+
+  for (const data of macros) {
+    const exists = game.macros.some(m => m.name === data.name && m.getFlag(MODULE_ID, "managed"));
+    if (!exists) await Macro.create({ ...data, type: "script", flags: { [MODULE_ID]: { managed: true } } });
+  }
 }
