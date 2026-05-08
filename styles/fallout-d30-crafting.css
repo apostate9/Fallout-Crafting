@@ -1,0 +1,233 @@
+/* ── Variables ─────────────────────────────────────────────────────────────── */
+.fallout-d30-crafting {
+  --fd30-bg:        #0d0d0d;
+  --fd30-bg2:       #1a1a1a;
+  --fd30-bg3:       #252525;
+  --fd30-border:    #3a3a3a;
+  --fd30-green:     #39ff14;
+  --fd30-green-dim: #1a7a08;
+  --fd30-amber:     #ffb300;
+  --fd30-red:       #e53935;
+  --fd30-text:      #c8c8c8;
+  --fd30-text-dim:  #666;
+  --fd30-radius:    3px;
+  --fd30-font-mono: "Share Tech Mono", "Courier New", monospace;
+  --fd30-font-body: "Roboto Condensed", "Arial Narrow", sans-serif;
+
+  color:       var(--fd30-text);
+  font-family: var(--fd30-font-body);
+  font-size:   13px;
+  line-height: 1.4;
+  background:  var(--fd30-bg);
+}
+
+/* ── Shared utilities ──────────────────────────────────────────────────────── */
+.fallout-d30-crafting button {
+  background:    var(--fd30-bg3);
+  border:        1px solid var(--fd30-border);
+  color:         var(--fd30-text);
+  border-radius: var(--fd30-radius);
+  padding:       3px 8px;
+  cursor:        pointer;
+  font-family:   var(--fd30-font-body);
+  font-size:     12px;
+}
+.fallout-d30-crafting button:hover:not(:disabled) {
+  border-color: var(--fd30-green);
+  color:        var(--fd30-green);
+}
+.fallout-d30-crafting button:disabled {
+  opacity: 0.4;
+  cursor:  not-allowed;
+}
+.fallout-d30-crafting button.primary {
+  border-color: var(--fd30-green);
+  color:        var(--fd30-green);
+}
+.fallout-d30-crafting input[type="text"],
+.fallout-d30-crafting input[type="number"],
+.fallout-d30-crafting input[type="search"],
+.fallout-d30-crafting textarea,
+.fallout-d30-crafting select {
+  background:    var(--fd30-bg2);
+  border:        1px solid var(--fd30-border);
+  border-radius: var(--fd30-radius);
+  color:         var(--fd30-text);
+  padding:       3px 6px;
+  font-family:   var(--fd30-font-body);
+  font-size:     12px;
+}
+.fallout-d30-crafting input:focus,
+.fallout-d30-crafting select:focus,
+.fallout-d30-crafting textarea:focus { outline: 1px solid var(--fd30-green-dim); }
+
+.fallout-d30-crafting .item-img    { width: 32px; height: 32px; object-fit: contain; border-radius: 2px; }
+.fallout-d30-crafting .item-img-sm { width: 20px; height: 20px; object-fit: contain; border-radius: 2px; }
+
+.fallout-d30-crafting .drop-slot {
+  display:       flex;
+  align-items:   center;
+  gap:           6px;
+  background:    var(--fd30-bg2);
+  border:        1px dashed var(--fd30-border);
+  border-radius: var(--fd30-radius);
+  padding:       4px 8px;
+  min-height:    36px;
+  min-width:     160px;
+  cursor:        copy;
+}
+.fallout-d30-crafting .drop-slot.drag-over { border-color: var(--fd30-green); background: #0e1e09; }
+.fallout-d30-crafting .drop-hint          { color: var(--fd30-text-dim); font-style: italic; }
+.fallout-d30-crafting .clear-btn          { margin-left: auto; background: transparent; border: none; color: var(--fd30-red); font-size: 14px; }
+
+/* ── Recipe Manager ────────────────────────────────────────────────────────── */
+.recipe-manager-body {
+  display:        flex;
+  flex-direction: column;
+  height:         100%;
+  overflow:       hidden;
+}
+.rm-toolbar {
+  display:     flex;
+  align-items: center;
+  gap:         4px;
+  padding:     6px 8px;
+  background:  var(--fd30-bg2);
+  border-bottom: 1px solid var(--fd30-border);
+  flex-shrink: 0;
+}
+.rm-toolbar .toolbar-sep { flex: 0 0 1px; background: var(--fd30-border); height: 18px; margin: 0 4px; }
+.rm-columns { display: flex; flex: 1; overflow: hidden; }
+.rm-list-pane {
+  width:         260px;
+  min-width:     200px;
+  display:       flex;
+  flex-direction:column;
+  border-right:  1px solid var(--fd30-border);
+  overflow:      hidden;
+}
+.rm-list-pane .recipe-search { width: calc(100% - 16px); margin: 6px 8px; }
+.recipe-list { flex: 1; overflow-y: auto; }
+.recipe-list-row {
+  padding:    6px 10px;
+  cursor:     pointer;
+  border-bottom: 1px solid var(--fd30-bg3);
+}
+.recipe-list-row:hover   { background: var(--fd30-bg3); }
+.recipe-list-row.selected{ background: var(--fd30-bg3); border-left: 3px solid var(--fd30-green); }
+.recipe-list-name  { display: block; font-weight: 600; color: var(--fd30-green); font-family: var(--fd30-font-mono); }
+.recipe-list-meta  { display: block; font-size: 11px; color: var(--fd30-text-dim); }
+.recipe-list-empty { padding: 12px; color: var(--fd30-text-dim); text-align: center; }
+
+.rm-form-pane   { flex: 1; overflow-y: auto; padding: 10px 14px; }
+.rm-no-selection{ color: var(--fd30-text-dim); text-align: center; padding-top: 40px; }
+
+.recipe-form .form-row        { margin-bottom: 8px; display: flex; flex-direction: column; gap: 3px; }
+.recipe-form .form-row label  { font-size: 11px; color: var(--fd30-text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.recipe-form .form-row textarea{ min-height: 56px; resize: vertical; width: 100%; box-sizing: border-box; }
+.recipe-form input[type="text"],
+.recipe-form input[type="number"],
+.recipe-form select            { width: 100%; box-sizing: border-box; }
+.recipe-form .form-row-inline  { flex-direction: row; gap: 12px; }
+.recipe-form .form-row-inline > div { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+
+.form-section       { margin-bottom: 12px; }
+.form-section h3    { margin: 0 0 6px; font-size: 12px; color: var(--fd30-amber); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--fd30-font-mono); }
+
+.item-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.item-row .qty-input { width: 52px; }
+
+.form-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding-top: 8px; border-top: 1px solid var(--fd30-border); }
+.unsaved-indicator { font-size: 11px; color: var(--fd30-amber); }
+
+/* ── Crafting Window ───────────────────────────────────────────────────────── */
+.crafting-window-body { display: flex; flex-direction: column; height: 100%; }
+.cw-header {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  padding:     8px 10px;
+  background:  var(--fd30-bg2);
+  border-bottom: 1px solid var(--fd30-border);
+  flex-shrink: 0;
+}
+.actor-portrait { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 1px solid var(--fd30-border); }
+.actor-info     { display: flex; flex-direction: column; gap: 3px; }
+.actor-name     { font-family: var(--fd30-font-mono); color: var(--fd30-green); font-weight: 700; }
+.cw-header .recipe-filter { margin-left: auto; width: 180px; }
+
+.crafting-window-body .recipe-list { flex: 1; overflow-y: auto; padding: 4px 0; }
+.recipe-row { border-bottom: 1px solid var(--fd30-bg3); }
+.recipe-row.unavailable .recipe-name { color: var(--fd30-text-dim); }
+
+.recipe-summary {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  padding:     6px 10px;
+  cursor:      pointer;
+}
+.recipe-summary:hover { background: var(--fd30-bg3); }
+.recipe-name  { flex: 1; font-family: var(--fd30-font-mono); color: var(--fd30-green); }
+.recipe-skill { font-size: 11px; color: var(--fd30-text-dim); white-space: nowrap; }
+
+.schematic-icon       { opacity: 0.4; }
+.schematic-icon.held  { opacity: 1; }
+
+.ingredient-chips { display: flex; gap: 3px; }
+.chip { font-size: 11px; padding: 1px 5px; border-radius: 10px; background: var(--fd30-bg3); border: 1px solid var(--fd30-border); }
+.chip.ok    { border-color: var(--fd30-green-dim); color: var(--fd30-green); }
+.chip.short { border-color: var(--fd30-red); color: var(--fd30-red); }
+
+.craft-btn      { margin-left: 4px; }
+.craft-cooldown { font-size: 11px; color: var(--fd30-amber); white-space: nowrap; }
+
+.recipe-detail  { display: none; padding: 8px 14px 12px; background: var(--fd30-bg2); }
+.recipe-row.expanded .recipe-detail { display: block; }
+.recipe-desc    { margin: 0 0 8px; color: var(--fd30-text-dim); font-style: italic; }
+.detail-grid    { display: flex; gap: 20px; }
+.detail-col     { flex: 1; }
+.detail-col h4  { margin: 0 0 4px; font-size: 11px; color: var(--fd30-amber); text-transform: uppercase; font-family: var(--fd30-font-mono); }
+.detail-item    { display: flex; align-items: center; gap: 5px; margin-bottom: 3px; font-size: 12px; }
+.detail-item.ok   .qty { color: var(--fd30-green); }
+.detail-item.short .qty{ color: var(--fd30-red); }
+.qty { margin-left: auto; font-family: var(--fd30-font-mono); font-size: 11px; }
+
+.no-recipes { padding: 20px; text-align: center; color: var(--fd30-text-dim); }
+
+/* ── Chat Card ─────────────────────────────────────────────────────────────── */
+.crafting-card {
+  border:  1px solid var(--fd30-border);
+  padding: 10px 12px;
+}
+.card-header { margin-bottom: 6px; }
+.card-title   { display: block; font-family: var(--fd30-font-mono); font-size: 14px; color: var(--fd30-green); font-weight: 700; }
+.card-crafter { font-size: 11px; color: var(--fd30-text-dim); }
+.card-skill   { font-family: var(--fd30-font-mono); color: var(--fd30-amber); margin-bottom: 8px; }
+.card-schematic { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 12px; }
+.card-ingredients,
+.card-outputs { margin-bottom: 8px; }
+.card-ingredients h4,
+.card-outputs h4 { margin: 0 0 3px; font-size: 11px; color: var(--fd30-text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.card-item { display: flex; align-items: center; gap: 5px; font-size: 12px; margin-bottom: 2px; }
+.card-actions { display: flex; gap: 6px; margin-top: 8px; }
+.roll-prompt-btn { flex: 1; }
+.success-btn { border-color: var(--fd30-green); color: var(--fd30-green); }
+.failure-btn { border-color: var(--fd30-red); color: var(--fd30-red); }
+.card-outcome { padding: 6px 10px; border-radius: var(--fd30-radius); font-family: var(--fd30-font-mono); font-weight: 700; text-align: center; margin-top: 8px; }
+.card-outcome.success { background: #0c2e09; border: 1px solid var(--fd30-green); color: var(--fd30-green); }
+.card-outcome.failure { background: #2e0c09; border: 1px solid var(--fd30-red); color: var(--fd30-red); }
+
+/* ── Bench / Skills editors ────────────────────────────────────────────────── */
+.bench-editor-body,
+.skills-editor-body { padding: 10px; }
+.bench-table,
+.skills-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+.bench-table th,
+.skills-table th { text-align: left; font-size: 11px; color: var(--fd30-text-dim); text-transform: uppercase; padding: 4px 6px; border-bottom: 1px solid var(--fd30-border); }
+.bench-table td,
+.skills-table td { padding: 3px 4px; }
+.bench-table input,
+.skills-table input { width: 100%; box-sizing: border-box; }
+.editor-footer { display: flex; align-items: center; gap: 6px; }
+.editor-footer .spacer { flex: 1; }

@@ -1,0 +1,79 @@
+<div class="fallout-d30-crafting crafting-window-body">
+  <div class="cw-header">
+    <img src="{{actor.img}}" class="actor-portrait" alt="{{actor.name}}">
+    <div class="actor-info">
+      <span class="actor-name">{{actor.name}}</span>
+      {{#if canChange}}
+      <select class="bench-select">
+        {{#each benchTypes}}
+        <option value="{{this.id}}" {{#eq this.id ../benchType}}selected{{/eq}}>{{this.label}}</option>
+        {{/each}}
+      </select>
+      {{else}}
+      <span class="bench-label">{{benchTypeLabel benchType benchTypes}}</span>
+      {{/if}}
+    </div>
+    <input class="recipe-filter" type="search" placeholder="{{localize 'FALLOUT_D30_CRAFTING.CraftingWindow.Filter'}}" value="{{filter}}">
+  </div>
+
+  <div class="recipe-list">
+    {{#each recipes}}
+    <div class="recipe-row {{#unless this.canCraft}}unavailable{{/unless}}">
+      <div class="recipe-summary">
+        <span class="recipe-name">{{this.name}}</span>
+        <span class="recipe-skill">{{this.skillLabel}} DC{{this.difficulty}}</span>
+
+        {{#if this.schematic}}
+        <span class="schematic-icon {{#if this.schematic.held}}held{{else}}missing{{/if}}" title="{{localize 'FALLOUT_D30_CRAFTING.CraftingWindow.Schematic'}}: {{this.schematic.name}}">
+          <img src="{{this.schematic.img}}" class="item-img-sm">
+        </span>
+        {{/if}}
+
+        <span class="ingredient-chips">
+          {{#each this.ingredients}}
+          <span class="chip {{#if this.enough}}ok{{else}}short{{/if}}" title="{{this.name}}">
+            {{this.held}}/{{this.required}}
+          </span>
+          {{/each}}
+        </span>
+
+        {{#if this.cooling}}
+        <span class="craft-cooldown">{{localize "FALLOUT_D30_CRAFTING.Cooldown.Label"}}: {{this.cooldownLabel}}</span>
+        {{else}}
+        <button type="button" class="craft-btn" data-action="craft" data-recipe-id="{{this.id}}" {{#unless this.canCraft}}disabled{{/unless}}>
+          {{localize "FALLOUT_D30_CRAFTING.CraftingWindow.Craft"}}
+        </button>
+        {{/if}}
+      </div>
+
+      <div class="recipe-detail">
+        {{#if this.description}}<p class="recipe-desc">{{this.description}}</p>{{/if}}
+        <div class="detail-grid">
+          <div class="detail-col">
+            <h4>{{localize "FALLOUT_D30_CRAFTING.Recipe.Ingredients"}}</h4>
+            {{#each this.ingredients}}
+            <div class="detail-item {{#if this.enough}}ok{{else}}short{{/if}}">
+              <img src="{{this.img}}" class="item-img-sm">
+              <span>{{this.name}}</span>
+              <span class="qty">{{this.held}}/{{this.required}}</span>
+            </div>
+            {{/each}}
+          </div>
+          <div class="detail-col">
+            <h4>{{localize "FALLOUT_D30_CRAFTING.Recipe.Outputs"}}</h4>
+            {{#each this.outputs}}
+            <div class="detail-item">
+              <img src="{{this.img}}" class="item-img-sm">
+              <span>{{this.name}}</span>
+              <span class="qty">×{{this.quantity}}</span>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+    {{else}}
+    <div class="no-recipes">{{localize "FALLOUT_D30_CRAFTING.CraftingWindow.NoRecipes"}}</div>
+    {{/each}}
+  </div>
+</div>

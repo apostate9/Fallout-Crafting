@@ -1,0 +1,26 @@
+<div class="fallout-d30-crafting bench-editor-body">
+  <table class="bench-table">
+    <thead>
+      <tr>
+        <th>{{localize "FALLOUT_D30_CRAFTING.BenchEditor.IdCol"}}</th>
+        <th>{{localize "FALLOUT_D30_CRAFTING.BenchEditor.LabelCol"}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each rows}}
+      <tr>
+        <td><input class="bench-id-input" type="text" value="{{this.id}}" data-index="{{@index}}" placeholder="workbench"></td>
+        <td><input class="bench-label-input" type="text" value="{{this.label}}" data-index="{{@index}}" placeholder="Workbench"></td>
+        <td><button type="button" data-action="delete-row" data-index="{{@index}}" title="{{localize 'FALLOUT_D30_CRAFTING.Delete'}}">&times;</button></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="editor-footer">
+    <button type="button" data-action="add-row">{{localize "FALLOUT_D30_CRAFTING.BenchEditor.AddRow"}}</button>
+    <span class="spacer"></span>
+    <button type="button" data-action="cancel">{{localize "FALLOUT_D30_CRAFTING.Cancel"}}</button>
+    <button type="button" data-action="save" class="primary">{{localize "FALLOUT_D30_CRAFTING.Save"}}</button>
+  </div>
+</div>

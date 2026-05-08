@@ -1,0 +1,59 @@
+<div class="fallout-d30-crafting crafting-card {{#if craftingState.resolved}}resolved{{/if}}">
+  <div class="card-header">
+    <span class="card-title">{{craftingState.recipeName}}</span>
+    <span class="card-crafter">{{craftingState.actorName}}</span>
+  </div>
+
+  <div class="card-skill">
+    {{craftingState.skill}} vs DC {{craftingState.difficulty}}
+  </div>
+
+  {{#if craftingState.schematic}}
+  <div class="card-schematic">
+    <img src="{{craftingState.schematic.img}}" class="item-img-sm">
+    <span>{{localize "FALLOUT_D30_CRAFTING.Recipe.Schematic"}}: {{craftingState.schematic.name}}</span>
+  </div>
+  {{/if}}
+
+  <div class="card-ingredients">
+    <h4>{{localize "FALLOUT_D30_CRAFTING.Recipe.Ingredients"}}</h4>
+    {{#each craftingState.ingredients}}
+    <div class="card-item">
+      <img src="{{this.img}}" class="item-img-sm">
+      <span>{{this.name}} ×{{this.quantity}}</span>
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="card-outputs">
+    <h4>{{localize "FALLOUT_D30_CRAFTING.Recipe.Outputs"}}</h4>
+    {{#each craftingState.outputs}}
+    <div class="card-item">
+      <img src="{{this.img}}" class="item-img-sm">
+      <span>{{this.name}} ×{{this.quantity}}</span>
+    </div>
+    {{/each}}
+  </div>
+
+  {{#if craftingState.resolved}}
+    {{#eq craftingState.outcome "success"}}
+    <div class="card-outcome success">{{localize "FALLOUT_D30_CRAFTING.Chat.Crafted"}}</div>
+    {{/eq}}
+    {{#eq craftingState.outcome "failure"}}
+    <div class="card-outcome failure">{{localize "FALLOUT_D30_CRAFTING.Chat.Failed"}}</div>
+    {{/eq}}
+  {{else}}
+  <div class="card-actions">
+    <button type="button" data-action="craft-roll-prompt" class="roll-prompt-btn">
+      {{localize "FALLOUT_D30_CRAFTING.Chat.RollButton"}}
+    </button>
+    {{!-- GM-only buttons rendered client-side via bindChatCardButtons --}}
+    <button type="button" data-action="craft-success" class="gm-btn success-btn" style="display:none">
+      {{localize "FALLOUT_D30_CRAFTING.Chat.Success"}}
+    </button>
+    <button type="button" data-action="craft-failure" class="gm-btn failure-btn" style="display:none">
+      {{localize "FALLOUT_D30_CRAFTING.Chat.Failure"}}
+    </button>
+  </div>
+  {{/if}}
+</div>

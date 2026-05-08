@@ -1,0 +1,110 @@
+{
+  "FALLOUT_D30_CRAFTING": {
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "Delete": "Delete",
+    "Unsaved": "Unsaved changes",
+    "DropItem": "Drop item here",
+
+    "Settings": {
+      "FailureMode": {
+        "Name": "Failure Mode",
+        "Hint": "What happens to ingredients when a craft fails.",
+        "Time": "Time cost only (cooldown, no ingredient loss)",
+        "Consume": "Consume ingredients on failure"
+      },
+      "CooldownSeconds": {
+        "Name": "Failure Cooldown (seconds)",
+        "Hint": "In-game seconds before a failed recipe can be attempted again. Default 86400 = 24 hours."
+      },
+      "PlayersCanChangeBench": {
+        "Name": "Players Can Change Bench",
+        "Hint": "Allow players to switch bench type freely in the Crafting Window."
+      }
+    },
+
+    "Recipe": {
+      "Name": "Name",
+      "Description": "Description",
+      "Bench": "Bench",
+      "Skill": "Skill",
+      "Difficulty": "Difficulty (DC)",
+      "Schematic": "Schematic",
+      "Ingredients": "Ingredients",
+      "Outputs": "Outputs",
+      "AddIngredient": "Add Ingredient",
+      "AddOutput": "Add Output"
+    },
+
+    "RecipeManager": {
+      "Title": "Recipe Manager",
+      "New": "New",
+      "Duplicate": "Duplicate",
+      "Delete": "Delete",
+      "Import": "Import JSON",
+      "Export": "Export JSON",
+      "EditBenches": "Bench Types",
+      "EditSkills": "Skills",
+      "Search": "Search recipes…",
+      "NoRecipes": "No recipes found.",
+      "SelectOrNew": "Select a recipe or create a new one.",
+      "UnsavedChanges": "You have unsaved changes. Discard them?",
+      "ConfirmDelete": "Delete this recipe? This cannot be undone.",
+      "Saved": "Recipe saved.",
+      "Imported": "Recipes imported.",
+      "NewRecipeName": "New Recipe"
+    },
+
+    "BenchEditor": {
+      "Title": "Bench Types",
+      "IdCol": "ID",
+      "LabelCol": "Label",
+      "AddRow": "Add Bench Type"
+    },
+
+    "SkillsEditor": {
+      "Title": "Skills",
+      "KeyCol": "Key (e.g. skill_repair)",
+      "LabelCol": "Label",
+      "AddRow": "Add Skill"
+    },
+
+    "CraftingWindow": {
+      "Title": "Crafting",
+      "Filter": "Filter recipes…",
+      "Craft": "Craft",
+      "Schematic": "Schematic",
+      "NoRecipes": "No recipes available at this bench."
+    },
+
+    "Cooldown": {
+      "Label": "Cooling down",
+      "Remaining": "Cooling down — {time} remaining"
+    },
+
+    "Craft": {
+      "MissingSchematic": "You don't have the required schematic.",
+      "InsufficientIngredient": "Insufficient {name}: have {held}, need {required}.",
+      "BadIngredientUUID": "Ingredient item could not be found (UUID: {uuid}).",
+      "ActorNotFound": "Crafter actor not found.",
+      "RecipeNotFound": "Recipe not found."
+    },
+
+    "Chat": {
+      "RollButton": "Roll {skill} vs DC {dc}",
+      "RollPrompt": "{actor} is attempting {recipe} — {skill} vs DC {dc}. Please roll.",
+      "Success": "Success",
+      "Failure": "Failure",
+      "Crafted": "Crafted!",
+      "Failed": "Failed."
+    },
+
+    "Macro": {
+      "OpenCrafting": "Open Crafting",
+      "OpenCraftingAtBench": "Open Crafting at Bench…",
+      "OpenRecipeManager": "Open Recipe Manager",
+      "NoBenchSelected": "Select a bench type:",
+      "NoActor": "No actor selected. Select a token or assign a character."
+    }
+  }
+}

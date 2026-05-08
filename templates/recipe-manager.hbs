@@ -1,0 +1,140 @@
+<div class="fallout-d30-crafting recipe-manager-body">
+  <div class="rm-toolbar">
+    <button type="button" data-action="new-recipe" title="{{localize 'FALLOUT_D30_CRAFTING.RecipeManager.New'}}">
+      <i class="fas fa-plus"></i> {{localize "FALLOUT_D30_CRAFTING.RecipeManager.New"}}
+    </button>
+    <button type="button" data-action="duplicate-recipe" {{#unless selectedId}}disabled{{/unless}} title="{{localize 'FALLOUT_D30_CRAFTING.RecipeManager.Duplicate'}}">
+      <i class="fas fa-copy"></i>
+    </button>
+    <button type="button" data-action="delete-recipe" {{#unless selectedId}}disabled{{/unless}} title="{{localize 'FALLOUT_D30_CRAFTING.RecipeManager.Delete'}}">
+      <i class="fas fa-trash"></i>
+    </button>
+    <span class="toolbar-sep"></span>
+    <button type="button" data-action="import-json" title="{{localize 'FALLOUT_D30_CRAFTING.RecipeManager.Import'}}">
+      <i class="fas fa-file-import"></i> {{localize "FALLOUT_D30_CRAFTING.RecipeManager.Import"}}
+    </button>
+    <button type="button" data-action="export-json" title="{{localize 'FALLOUT_D30_CRAFTING.RecipeManager.Export'}}">
+      <i class="fas fa-file-export"></i> {{localize "FALLOUT_D30_CRAFTING.RecipeManager.Export"}}
+    </button>
+    <span class="toolbar-sep"></span>
+    <button type="button" data-action="edit-benches">{{localize "FALLOUT_D30_CRAFTING.RecipeManager.EditBenches"}}</button>
+    <button type="button" data-action="edit-skills">{{localize "FALLOUT_D30_CRAFTING.RecipeManager.EditSkills"}}</button>
+  </div>
+
+  <div class="rm-columns">
+    <!-- Left pane: recipe list -->
+    <div class="rm-list-pane">
+      <input class="recipe-search" type="search" placeholder="{{localize 'FALLOUT_D30_CRAFTING.RecipeManager.Search'}}" value="">
+      <div class="recipe-list">
+        {{#each recipes}}
+        <div class="recipe-list-row {{#eq this.id ../draft.id}}selected{{/eq}}" data-recipe-id="{{this.id}}">
+          <span class="recipe-list-name">{{this.name}}</span>
+          <span class="recipe-list-meta">{{this.bench}} · {{this.skill}} DC{{this.difficulty}}</span>
+        </div>
+        {{else}}
+        <div class="recipe-list-empty">{{localize "FALLOUT_D30_CRAFTING.RecipeManager.NoRecipes"}}</div>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Right pane: form editor -->
+    <div class="rm-form-pane">
+      {{#if draft}}
+      <div class="recipe-form">
+        <div class="form-row">
+          <label>{{localize "FALLOUT_D30_CRAFTING.Recipe.Name"}}</label>
+          <input class="recipe-field" data-field="name" type="text" value="{{draft.name}}">
+        </div>
+        <div class="form-row">
+          <label>{{localize "FALLOUT_D30_CRAFTING.Recipe.Description"}}</label>
+          <textarea class="recipe-field" data-field="description">{{draft.description}}</textarea>
+        </div>
+        <div class="form-row form-row-inline">
+          <div>
+            <label>{{localize "FALLOUT_D30_CRAFTING.Recipe.Bench"}}</label>
+            <select class="recipe-field" data-field="bench">
+              {{#each benchTypes}}
+              <option value="{{this.id}}" {{#eq this.id ../draft.bench}}selected{{/eq}}>{{this.label}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div>
+            <label>{{localize "FALLOUT_D30_CRAFTING.Recipe.Skill"}}</label>
+            <select class="recipe-field" data-field="skill">
+              <option value="">—</option>
+              {{#each skills}}
+              <option value="{{this.key}}" {{#eq this.key ../draft.skill}}selected{{/eq}}>{{this.label}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div>
+            <label>{{localize "FALLOUT_D30_CRAFTING.Recipe.Difficulty"}}</label>
+            <input class="recipe-field" data-field="difficulty" type="number" min="1" value="{{draft.difficulty}}" style="width:5rem">
+          </div>
+        </div>
+
+        <!-- Schematic -->
+        <div class="form-section">
+          <h3>{{localize "FALLOUT_D30_CRAFTING.Recipe.Schematic"}}</h3>
+          <div class="schematic-drop-slot drop-slot" title="{{localize 'FALLOUT_D30_CRAFTING.DropItem'}}">
+            {{#if draft.schematicItemUuid}}
+            <img src="{{draft.schematicImg}}" class="item-img">
+            <span class="item-name">{{draft.schematicName}}</span>
+            <button type="button" data-action="clear-schematic" class="clear-btn">&times;</button>
+            {{else}}
+            <span class="drop-hint">{{localize "FALLOUT_D30_CRAFTING.DropItem"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <!-- Ingredients -->
+        <div class="form-section">
+          <h3>{{localize "FALLOUT_D30_CRAFTING.Recipe.Ingredients"}}</h3>
+          {{#each draft.ingredients}}
+          <div class="ingredient-row item-row">
+            <div class="item-drop-slot drop-slot" title="{{localize 'FALLOUT_D30_CRAFTING.DropItem'}}">
+              {{#if this.itemUuid}}
+              <img src="{{this.itemImg}}" class="item-img">
+              <span class="item-name">{{this.itemName}}</span>
+              {{else}}
+              <span class="drop-hint">{{localize "FALLOUT_D30_CRAFTING.DropItem"}}</span>
+              {{/if}}
+            </div>
+            <input class="qty-input" type="number" min="1" value="{{this.quantity}}" data-index="{{@index}}">
+            <button type="button" data-action="remove-ingredient" data-index="{{@index}}">&times;</button>
+          </div>
+          {{/each}}
+          <button type="button" data-action="add-ingredient">+ {{localize "FALLOUT_D30_CRAFTING.Recipe.AddIngredient"}}</button>
+        </div>
+
+        <!-- Outputs -->
+        <div class="form-section">
+          <h3>{{localize "FALLOUT_D30_CRAFTING.Recipe.Outputs"}}</h3>
+          {{#each draft.outputs}}
+          <div class="output-row item-row">
+            <div class="item-drop-slot drop-slot" title="{{localize 'FALLOUT_D30_CRAFTING.DropItem'}}">
+              {{#if this.itemUuid}}
+              <img src="{{this.itemImg}}" class="item-img">
+              <span class="item-name">{{this.itemName}}</span>
+              {{else}}
+              <span class="drop-hint">{{localize "FALLOUT_D30_CRAFTING.DropItem"}}</span>
+              {{/if}}
+            </div>
+            <input class="qty-input" type="number" min="1" value="{{this.quantity}}" data-index="{{@index}}">
+            <button type="button" data-action="remove-output" data-index="{{@index}}">&times;</button>
+          </div>
+          {{/each}}
+          <button type="button" data-action="add-output">+ {{localize "FALLOUT_D30_CRAFTING.Recipe.AddOutput"}}</button>
+        </div>
+
+        <div class="form-footer">
+          {{#if dirty}}<span class="unsaved-indicator">{{localize "FALLOUT_D30_CRAFTING.Unsaved"}}</span>{{/if}}
+          <button type="button" data-action="save-recipe" class="primary">{{localize "FALLOUT_D30_CRAFTING.Save"}}</button>
+        </div>
+      </div>
+      {{else}}
+      <div class="rm-no-selection">{{localize "FALLOUT_D30_CRAFTING.RecipeManager.SelectOrNew"}}</div>
+      {{/if}}
+    </div>
+  </div>
+</div>

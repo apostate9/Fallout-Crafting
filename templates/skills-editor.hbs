@@ -1,0 +1,26 @@
+<div class="fallout-d30-crafting skills-editor-body">
+  <table class="skills-table">
+    <thead>
+      <tr>
+        <th>{{localize "FALLOUT_D30_CRAFTING.SkillsEditor.KeyCol"}}</th>
+        <th>{{localize "FALLOUT_D30_CRAFTING.SkillsEditor.LabelCol"}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each rows}}
+      <tr>
+        <td><input class="skill-key-input" type="text" value="{{this.key}}" data-index="{{@index}}" placeholder="skill_repair"></td>
+        <td><input class="skill-label-input" type="text" value="{{this.label}}" data-index="{{@index}}" placeholder="Repair"></td>
+        <td><button type="button" data-action="delete-row" data-index="{{@index}}" title="{{localize 'FALLOUT_D30_CRAFTING.Delete'}}">&times;</button></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="editor-footer">
+    <button type="button" data-action="add-row">{{localize "FALLOUT_D30_CRAFTING.SkillsEditor.AddRow"}}</button>
+    <span class="spacer"></span>
+    <button type="button" data-action="cancel">{{localize "FALLOUT_D30_CRAFTING.Cancel"}}</button>
+    <button type="button" data-action="save" class="primary">{{localize "FALLOUT_D30_CRAFTING.Save"}}</button>
+  </div>
+</div>
