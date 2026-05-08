@@ -200,11 +200,12 @@ export class RecipeManager extends HandlebarsApplicationMixin(ApplicationV2) {
       });
       if (!ok) return;
     }
+    const benchTypes = getBenchTypesSetting();
     this.#draft = {
       id: foundry.utils.randomID(),
       name: game.i18n.localize("FALLOUT_D30_CRAFTING.RecipeManager.NewRecipeName"),
       description: "",
-      bench: "none",
+      bench: benchTypes[0]?.id ?? "none",
       skill: "",
       difficulty: 10,
       schematicItemUuid: null,
